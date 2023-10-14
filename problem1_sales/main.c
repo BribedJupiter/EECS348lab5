@@ -118,13 +118,19 @@ int main ()
 {
     float sales[12]; /* Create a buffer to hold our sales numbers */
     int months[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-    /* Input 12 values. TODO: Change to text file input later */
+    
+    /* Input 12 values. TODO: Change to text file input later
     for (int i = 0; i < 12; i++)
     {
         printf("Enter sales number %d:\n", i+1);
         scanf("%f", &sales[i]);
-    }
+    }*/
+    char filename[80];
+    FILE *inputFile;
+    scanf("%s", &filename);
 
+    printf("Enter an input filename: ");
+    
     printf("\n"); /* Print seperator line */
 
     monthlySalesReport(sales, months);
