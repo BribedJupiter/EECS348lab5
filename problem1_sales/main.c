@@ -33,7 +33,7 @@ const char* getMonth (int month)
 
 void monthlySalesReport(const float sales[12], const int months[12])
 {
-    printf("Monthly Sales Report for 2022:\n");
+    printf("Monthly Sales Report for 2022:\n\n");
     printf("Month      Sales     \n");
     for (int i = 0; i < 12; i++)
     {
@@ -42,27 +42,31 @@ void monthlySalesReport(const float sales[12], const int months[12])
     printf("\n");
 }
 
-void minMaxAvg(const float sales[12])
+void minMaxAvg(const float sales[12], const int months[12])
 {
     float min = sales[0];
+    int minMonth = months[0];
     float max = sales[0];
+    int maxMonth = months[0];
     float avg = 0;
     for (int i = 0; i < 12; i++)
     {
         if (sales[i] < min)
         {
             min = sales[i];
+            minMonth = months[i];
         }
         if (sales[i] > max)
         {
             max = sales[i];
+            maxMonth = months[i];
         }
     }
     avg = (sales[0] + sales[1] + sales[2] + sales[3] + sales[4] + sales[5] + sales[6] + sales[7] + sales[8] + sales[9] + sales[10] + sales[11]) / 12;
     printf("Sales summary:\n");
-    printf("Minimum sales:  $%-10.2f\n", min);
-    printf("Maxmimum sales: $%-10.2f\n", max);
-    printf("Average sales:  $%-10.2f\n\n", avg); 
+    printf("Minimum sales: $%-10.2f - %s\n", min, getMonth(months[minMonth]));
+    printf("Maximum sales: $%-10.2f - %s\n", max, getMonth(months[maxMonth]));
+    printf("Average sales:  $%-10.2f\n", avg); 
 
     printf("\n");
 }
@@ -118,23 +122,33 @@ int main ()
 {
     float sales[12]; /* Create a buffer to hold our sales numbers */
     int months[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+
+    char filename[80];
     
-    /* Input 12 values. TODO: Change to text file input later
+    printf("Enter an input filename: ");
+    scanf("%s", filename);
+
+    FILE* inputFilePtr = fopen(filename, "r");
+
+    if (inputFilePtr == NULL)
+    {
+        printf("Invalid filename\n");
+        return 0;
+    }
+
+    /* Note: This assumes the file is 12 lines long with a number on each line and only that */
+
     for (int i = 0; i < 12; i++)
     {
-        printf("Enter sales number %d:\n", i+1);
-        scanf("%f", &sales[i]);
-    }*/
-    char filename[80];
-    FILE *inputFile;
-    scanf("%s", &filename);
+        fscanf(inputFilePtr, "%f", &sales[i]);
+    }
 
-    printf("Enter an input filename: ");
-    
+    fclose(inputFilePtr);
+        
     printf("\n"); /* Print seperator line */
 
     monthlySalesReport(sales, months);
-    minMaxAvg(sales);
+    minMaxAvg(sales, months);
     sixMonthAvgs(sales, months);
     highLowSalesReport(sales, months);
 
