@@ -2,4 +2,4 @@ main: main.c
 	cc main.c -o main
 
 clean:
-	rm -f main main.o
+	rm -f main main.o *~
